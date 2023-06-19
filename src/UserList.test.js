@@ -1,14 +1,19 @@
 import {render,screen,within} from '@testing-library/react';
 import UserList from './UserList';
 
-test('render one rows per user',()=>{
+function renderComponent(){
     const users = [
         {name:'a',email:"a@gmail.com"},
         {name:'b',email:"b@gmail.com"}
 
     ]
-    // const {container} =
+    
      render(<UserList users={users}/>)
+     return {users}
+}
+
+test('render one rows per user',()=>{
+    renderComponent();
     // screen.logTestingPlaygroundURL();
     const rows = within(screen.getByTestId('users')).getAllByRole('row');
     // const rows  = container.querySelectorAll('tbody tr');
@@ -17,11 +22,7 @@ test('render one rows per user',()=>{
 })
 
 test('render the email and name of each user',()=>{
-    const users = [
-        {name:'a',email:"a@gmail.com"},
-        {name:'b',email:"b@gmail.com"}
-    ]
-    render(<UserList users={users}/>);
+   const {users} = renderComponent()
     for(let user of users){
         const name = screen.getByRole('cell',{name:user.name})
         const email = screen.getByRole('cell',{name:user.email})
